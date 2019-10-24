@@ -1,0 +1,17 @@
+{
+  "name": "micro1",
+  "version": "1.0.0",
+  "description": "# This one is to get the list of threats entirely. curl -i localhost:8082/threats OR URL: #localhost:8081/heroes // works OR #localhost:8082/threats // works",
+  "main": "app.js",
+  "dependencies": {
+    "cookie-parser": "^1.4.4",
+    "express-generator": "^4.16.1",
+    "morgan": "^1.9.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

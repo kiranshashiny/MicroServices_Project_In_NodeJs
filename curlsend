@@ -1,0 +1,18 @@
+// this works, node stocksummary.js 8081/ node stocks.js 8082
+
+curl -i --request POST --header "Content-Type: application/json" --data '{"threatId": 3, "stocksummaryId":1}' localhost:8082/assignment
+
+#curl -i --request POST --header "Content-Type: application/json" --data '{"heroId": 4, "threatId": 3}' localhost:8082/assignment
+
+# This one is to get the list of threats entirely.
+curl -i localhost:8082/threats
+
+localhost:8082/threats
+localhost:8081/heroes // works
+https://localhost:8081/heroes - does not work.
+node powers.js 8081
+
+curl -i --request POST --header "Content-Type: application/json" localhost:8081/stocksummary/4
+
+node threats.js 8082
+curl -i --request POST --header "Content-Type: application/json" --data '{"threatId": 3}' localhost:8082/assignment
