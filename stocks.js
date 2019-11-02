@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 
 const heroesService = 'http://localhost:8081';
 
-const threats = [
+const stockNames = [
   {
       id: 1,
       displayName: 'CSCO',
@@ -25,15 +25,15 @@ const threats = [
   }
 ];
 
-app.get('/threats', (req, res) => {
-  console.log('Returning threats list');
-  res.send(threats);
+app.get('/stockNames', (req, res) => {
+  console.log('Returning stockNames list');
+  res.send(stockNames);
 });
 
 app.post('/assignment', (req, res) => {
   console.log ( "shashi - the In stocks.js ")
   console.log ( "stocksummaryId is ", req.body.stocksummaryId)
-  console.log ( "stocks      id is ", req.body.threatId)
+  console.log ( "stocks      id is ", req.body.stockId)
 
   request.post({
       headers: {'content-type': 'application/json'},
@@ -43,11 +43,6 @@ app.post('/assignment', (req, res) => {
       }`
   }, (err, heroResponse, body) => {
       if (!err) {
-          const threatId = parseInt(req.body.threatId);
-          console.log ( "shashi - stocks.js, threatId= ", threatId);
-          const threat = threats.find(subject => subject.id === threatId);
-          console.log ( "shashi - stocks.js, threat= ", threat);
-          //threat.assignedHero = req.body.stocksummaryId;
 	  console.log ("shashi is this stock summary ?", heroResponse.body )
           res.status(202).send(heroResponse.body);
           //res.status(202).send(threat);
