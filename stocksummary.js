@@ -45,29 +45,35 @@ const stocksummary = [
    }
 ];
 
+// Not being used anymore !
 app.get('/heroes', (req, res) => {
    console.log('Returning stocks summary list');
    res.send(heroes);
 });
-
-app.get('/powers', (req, res) => {
-   console.log('Returning powers list');
-   res.send(powers);
+// 
+app.get('/stockSummary', (req, res) => {
+   console.log('Returning stocks summary list');
+   res.send(stocksummary);
 });
+
 
 //
 // This can be only posted !
 // since this is a POST, I cannot do a GET
-// curl -i --request POST --header "Content-Type: application/json" --data '{"stocksummaryId": 4}' localhost:8081/hero
+// curl -i --request POST --header "Content-Type: application/json" --data '{"stocksummaryId": 4}' localhost:8081/stocksummary/4
+// http://localhost:8081/stocksummary/4
 // 
 app.post('/stocksummary/**', (req, res) => {
    const stocksummaryId = req.params[0];
    console.log ( "the stocksummaryId is ", stocksummaryId);
-   const foundSummary = stocksummary.find(subject => subject.id == stocksummaryId);
+   //const foundSummary = stocksummary.find(subject => subject.id == stocksummaryId);
+   
+   const foundSummary = stocksummary.find(subject => subject.displayName === stocksummaryId);
+
    console.log ( "the stocksummmary post is ", foundSummary);
 
    if (foundSummary) {
-       res.status(202).header({Location: `http://localhost:${port}/stocksummary/${foundSummary.id}`}).send(foundSummary);
+	res.status(202).header({Location: `http://localhost:${port}/stocksummary/${foundSummary.id}`}).send(foundSummary);
    } else {
        console.log(`Stock Summary not found.`);
        res.status(404).send();
@@ -76,5 +82,5 @@ app.post('/stocksummary/**', (req, res) => {
 
 //app.use('/img', express.static(path.join(__dirname,'img')));
 
-console.log(`Heroes service listening on port ${port}`);
+console.log(`Stock Summary service listening on port ${port}`);
 app.listen(port);
