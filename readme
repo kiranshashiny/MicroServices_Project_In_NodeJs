@@ -1,30 +1,10 @@
-#curl -i --request POST --header "Content-Type: application/json" --data '{"heroId": 4, "threatId": 3}' localhost:8082/assignment
-
-# This one is to get the list of threats entirely.
-#localhost:8081/????? // works
-OR
-#localhost:8082/powers or /stocksummary   should work.
-
-
-# curl -i --request POST  localhost:8082/assignment - I cannot do this for a post, 
-# I will get an empty reply !
-
 1. mongo - not required if it's already running.
 
-2. open first new terminal 
-	node stocks.js 8081
-
-3. open a new terminal 
-	node stocksummary.js 8082
-	http://localhost:8082/powers
-	http://localhost:8082/stocksummary
+2. open separate terminals 
+	node stocks.js 8082
+	node stocksummary.js 8081
 
 
 3.Open a third terminal and run the above long command and it will show the output
-curl -i --request POST --header "Content-Type: application/json" --data '{"heroId": 4, "threatId": 3}' localhost:8082/assignment
+curl -i --request POST --header "Content-Type: application/json" --data '{"stockId": 3, "stocksummaryId":"CSCO"}' localhost:8082/assignment
 
-
-2.
-db.usercollection.insert({ "username" : "testuser1", "email" : "testuser1@testdomain.com" })
-3.
-db.usercollection.find().pretty()
