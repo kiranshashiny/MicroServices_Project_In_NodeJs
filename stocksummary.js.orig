@@ -1,9 +1,6 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/";
-
 
 const port = process.argv.slice(2)[0];
 const app = express();
@@ -67,7 +64,6 @@ app.get('/stockSummary', (req, res) => {
 // http://localhost:8081/stocksummary/4
 // 
 app.post('/stocksummary/**', (req, res) => {
-
    const stocksummaryId = req.params[0];
    console.log ( "the stocksummaryId is ", stocksummaryId);
    //const foundSummary = stocksummary.find(subject => subject.id == stocksummaryId);
@@ -75,17 +71,6 @@ app.post('/stocksummary/**', (req, res) => {
    const foundSummary = stocksummary.find(subject => subject.displayName === stocksummaryId);
 
    console.log ( "the stocksummmary post is ", foundSummary);
-   MongoClient.connect(url, function(err, db) {
-	if ( err ) throw err;
-
-   	var dbo = db.db("mydb");
-	console.log ("am I here");
-   	// find just one. GTX, ATEN
-   	const cursor = dbo.collection('stocks_summary').find({ Symbol: "WUBA" }).toArray( function ( err, result ) {
-     	console.log ( result );
-     	db.close();
-   	}); 
-   });
 
    if (foundSummary) {
 	res.status(202).header({Location: `http://localhost:${port}/stocksummary/${foundSummary.id}`}).send(foundSummary);
