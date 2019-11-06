@@ -70,21 +70,19 @@ app.post('/stocksummary/**', (req, res) => {
 
    const stocksummaryId = req.params[0];
    console.log ( "the stocksummaryId is ", stocksummaryId);
-   //const foundSummary = stocksummary.find(subject => subject.id == stocksummaryId);
    
    const foundSummary = stocksummary.find(subject => subject.displayName === stocksummaryId);
 
    console.log ( "the stocksummmary post is ", foundSummary);
-   MongoClient.connect(url, function(err, db) {
-	if ( err ) throw err;
 
-   	var dbo = db.db("mydb");
-	console.log ("am I here");
-   	// find just one. GTX, ATEN
-   	const cursor = dbo.collection('stocks_summary').find({ Symbol: "WUBA" }).toArray( function ( err, result ) {
-     	console.log ( result );
-     	db.close();
-   	}); 
+   MongoClient.connect(url, function(err, db) {
+	   if (err) throw err;
+	   var dbo = db.db("mydb");
+	   // find just one. GTX, ATEN
+	   const cursor = dbo.collection('stocks_summary').find({ Symbol: "WUBA" }).toArray( function ( err, result ) {
+	     console.log ( result );
+	     db.close();
+   	});
    });
 
    if (foundSummary) {
