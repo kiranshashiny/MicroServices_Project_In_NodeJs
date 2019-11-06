@@ -7,4 +7,6 @@
 
 3.Open a third terminal and run the above long command and it will show the output
 curl -i --request POST --header "Content-Type: application/json" --data '{"stockId": 3, "stocksummaryId":"CSCO"}' localhost:8082/assignment
+4. Only for stock summary feed in the stock name at the end.
+curl -i --request POST --header "Content-Type: application/json" --data '{"stocksummaryId":"CSCO"}' localhost:8081/stocksummary/CSCO
 

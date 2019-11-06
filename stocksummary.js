@@ -4,6 +4,21 @@ const bodyParser = require('body-parser');
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
 
+var mongoose = require("mongoose");
+mongoose.Promise = global.Promise;
+mongoose.connect("mongodb://localhost:27017/mydb");
+
+var nameSchema = new mongoose.Schema({
+    Symbol: String,
+    Name: String,
+    LastSale:  String,
+    MarketCap: String, 
+    IPOyear:   String, 
+    Sector:    String,
+    Industry:  String
+});
+
+var User = mongoose.model("User", nameSchema);
 
 const port = process.argv.slice(2)[0];
 const app = express();
@@ -70,12 +85,26 @@ app.post('/stocksummary/**', (req, res) => {
 
    const stocksummaryId = req.params[0];
    console.log ( "the stocksummaryId is ", stocksummaryId);
-   
+ 
    const foundSummary = stocksummary.find(subject => subject.displayName === stocksummaryId);
 
-   console.log ( "the stocksummmary post is ", foundSummary);
+   console.log ( "Found stocksummmary details i.e ", foundSummary);
+   User.find({
+        Symbol: req.body.Symbol
+   }, function (err, users) {
+        if (err) {
+            console.log('Symbol Not Found');
+            res.status(400);
+        }
+        var userMap = {};
+	console.log ( "Printing all the details ..");
+        users.forEach(function(user) {
+                userMap[user._id] = user;
+                console.log ( user );
+        });
+   });
 
-   MongoClient.connect(url, function(err, db) {
+   /*MongoClient.connect(url, function(err, db) {
 	   if (err) throw err;
 	   var dbo = db.db("mydb");
 	   // find just one. GTX, ATEN
@@ -84,6 +113,7 @@ app.post('/stocksummary/**', (req, res) => {
 	     db.close();
    	});
    });
+   */
 
    if (foundSummary) {
 	res.status(202).header({Location: `http://localhost:${port}/stocksummary/${foundSummary.id}`}).send(foundSummary);

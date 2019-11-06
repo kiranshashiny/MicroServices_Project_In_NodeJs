@@ -1,33 +1,18 @@
-var mongoose = require('mongoose');
- 
-// make a connection
-mongoose.connect('mongodb://localhost:27017/mydb');
- 
-// get reference to database
-var db = mongoose.connection;
- 
-db.on('error', console.error.bind(console, 'connection error:'));
- 
-db.once('open', function() {
-    console.log("Connection Successful!");
-    
-    // define Schema
-    var StockSummarySchema = mongoose.Schema({
-	Symbol: String, 
-	Name: String,  
-	LastSale: String,  
-	MarketCap: String, 
-	IPOyear: String, 
-	Sector: String, 
-	Industry:String
-    });
- 
-    // compile schema to model
-    var stocks_var = mongoose.model('Book', StockSummarySchema, 'stocksummary');
- 
-    // documents array
-    var stocksummary = [
-		{ name: 'Mongoose Tutorial', price: 10, quantity: 25 },
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://localhost:27017/";
+
+
+var db;
+
+MongoClient.connect(url, function(err, db) {
+  var dbo = db.db("mydb");
+  if (err) throw err;
+	
+  var mystocks_summary = [
+	{id: 2, displayName: 'BBB', previous_close:'9.40', open: '9.42'},
+	{id: 6, displayName: 'FFF', previous_close:'9.40', open: '9.42'},
+
+
 {Symbol: 'DDD', Name: '3D Systems Corporation', LastSale: '9.59', MarketCap: '$1.13B', IPOyear: 'n/a', Sector: 'Technology', Industry:'Computer Software Prepackaged Software' },
 {Symbol: 'MMM', Name: '3M Company', LastSale: '170.09', MarketCap: '$97.85B', IPOyear: 'n/a', Sector: 'Health Care', Industry:'Medical/Dental Instruments' },
 {Symbol: 'WBAI', Name: '500.com Limited', LastSale: '9.7', MarketCap: '$416.86M', IPOyear: '2013', Sector: 'Consumer Services', Industry:'Services-Misc. Amusement & Recreation' },
@@ -3154,16 +3139,25 @@ db.once('open', function() {
 {Symbol: 'ZTO', Name: 'ZTO Express (Cayman) Inc.', LastSale: '21.74', MarketCap: '$17B', IPOyear: '2016', Sector: 'Transportation', Industry:'Trucking Freight/Courier Services' },
 {Symbol: 'ZUO', Name: 'Zuora Inc.', LastSale: '14.53', MarketCap: '$1.63B', IPOyear: '2018', Sector: 'Technology', Industry:'Computer Software Prepackaged Software' },
 {Symbol: 'ZYME', Name: 'Zymeworks Inc.', LastSale: '35.01', MarketCap: '$1.38B', IPOyear: '2017', Sector: 'Health Care', Industry:'Major Pharmaceuticals' },
-     ];
- 
-    // save multiple documents to the collection referenced by Model
-    // this is from mongoose.
-    stocks_var.collection.insertMany(stocksummary, function (err, docs) {
-      if (err){ 
-          return console.error(err);
-      } else {
-        console.log("Multiple documents inserted to Collection");
-	db.close();
-      }
-    });
+  ];
+
+  dbo.collection('stocks_summary').insertMany(mystocks_summary, function(err, res) {
+    if (err) throw err;
+    console.log("Number of documents inserted: " + res.insertedCount);
+    //db.close();
+  });
+
+  dbo.collection('stocks_summary').insertOne({mystocks_summary: 'GTX', previous_close:'9.40', bid: '9.42'}, function(err, r) {
+    //assert.equal(null, err);
+    //#assert.equal(1, r.insertedCount);
+    console.log ( "Inserted a single record ")
+  });
+
+  console.log ("Now printing the number of elements 'stocks'")
+  dbo.collection("stocks_summary").find({}).toArray( function(err, result) {
+    if (err) throw err;
+
+    console.log(result);
+    db.close();
+  });
 });
