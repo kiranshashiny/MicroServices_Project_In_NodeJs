@@ -20,6 +20,20 @@ var nameSchema = new mongoose.Schema({
 
 var User = mongoose.model("User", nameSchema);
 
+    // define Schema
+    var StockSummarySchema = mongoose.Schema({
+        Symbol: String,
+        Name: String,
+        LastSale: String,
+        MarketCap: String,
+        IPOyear: String,
+        Sector: String,
+        Industry:String
+    });
+
+    // compile schema to model
+    var stocksummary = mongoose.model('Book', StockSummarySchema, 'stocksummary');
+
 const port = process.argv.slice(2)[0];
 const app = express();
 app.use(bodyParser.json());
@@ -31,7 +45,7 @@ const powers = [
    { id: 4, name: 'Creative Controllers'},
    { id: 5, name: 'Tranque Inc' }
 ];
-
+/*
 const stocksummary = [
    {
        id: 1,
@@ -62,6 +76,7 @@ const stocksummary = [
        busy: false
    }
 ];
+*/
 
 // Not being used anymore !
 app.get('/heroes', (req, res) => {
@@ -86,21 +101,24 @@ app.post('/stocksummary/**', (req, res) => {
    const stocksummaryId = req.params[0];
    console.log ( "the stocksummaryId is ", stocksummaryId);
  
-   const foundSummary = stocksummary.find(subject => subject.displayName === stocksummaryId);
+   /*const foundSummary = stocksummary.find(subject => subject.displayName === stocksummaryId);
 
    console.log ( "Found stocksummmary details i.e ", foundSummary);
-   User.find({
-        Symbol: req.body.Symbol
-   }, function (err, users) {
+   */
+   // find just one. GTX, ATEN. This is for data inserted using Mongoose.
+   var summaryMap = {};
+   stocksummary.find({
+        Symbol: stocksummaryId,
+   }, function (err, summarydetails) {
         if (err) {
             console.log('Symbol Not Found');
             res.status(400);
         }
-        var userMap = {};
 	console.log ( "Printing all the details ..");
-        users.forEach(function(user) {
-                userMap[user._id] = user;
-                console.log ( user );
+        console.log (summarydetails );
+        summarydetails.forEach(function(element) {
+                summaryMap[element._id] = element;
+                console.log ( element );
         });
    });
 
@@ -115,8 +133,9 @@ app.post('/stocksummary/**', (req, res) => {
    });
    */
 
-   if (foundSummary) {
-	res.status(202).header({Location: `http://localhost:${port}/stocksummary/${foundSummary.id}`}).send(foundSummary);
+   //if (foundSummary) {
+   if (summaryMap) {
+	res.status(202).header({Location: `http://localhost:${port}/stocksummary/${summaryMap.Symbol}`}).send(summaryMap);
    } else {
        console.log(`Stock Summary not found.`);
        res.status(404).send();
