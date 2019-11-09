@@ -120,7 +120,16 @@ app.post('/stocksummary/**', (req, res) => {
                 console.log ( "Symbol :", element.Symbol);
                 console.log ( "Name: ", element.Name);
                 
-        	res.status(202).header({Location: `http://localhost:${port}/stocksummary/${element.Symbol}`}).send(element.Symbol);
+		console.log ("-->", element);
+        	res.status(202).header({Location: `http://localhost:${port}/stocksummary/${element.Symbol}`})
+		res.write(element.Symbol);
+		res.write(element.Name);
+		res.write(element.LastSale);
+		res.write(element.MarketCap);
+  		res.write(element.IPOyear);
+		res.write(element.Sector);
+		res.end();
+        	//res.status(202).header({Location: `http://localhost:${port}/stocksummary/${element}`}).send(element);
         });
    });
 
