@@ -103,10 +103,9 @@ app.post('/stocksummary/**', (req, res) => {
  
    /*const foundSummary = stocksummary.find(subject => subject.displayName === stocksummaryId);
 
-   console.log ( "Found stocksummmary details i.e ", foundSummary);
-   */
+   console.log ("Found stocksummmary details i.e ", foundSummary); */
    // find just one. GTX, ATEN. This is for data inserted using Mongoose.
-   var summaryMap = {};
+
    stocksummary.find({
         Symbol: stocksummaryId,
    }, function (err, summarydetails) {
@@ -115,10 +114,13 @@ app.post('/stocksummary/**', (req, res) => {
             res.status(400);
         }
 	console.log ( "Printing all the details ..");
-        console.log (summarydetails );
+        console.log ( summarydetails );
+        
         summarydetails.forEach(function(element) {
-                summaryMap[element._id] = element;
-                console.log ( element );
+                console.log ( "Symbol :", element.Symbol);
+                console.log ( "Name: ", element.Name);
+                
+        	res.status(202).header({Location: `http://localhost:${port}/stocksummary/${element.Symbol}`}).send(element.Symbol);
         });
    });
 
@@ -133,13 +135,16 @@ app.post('/stocksummary/**', (req, res) => {
    });
    */
 
-   //if (foundSummary) {
+   /*if (foundSummary) {
    if (summaryMap) {
-	res.status(202).header({Location: `http://localhost:${port}/stocksummary/${summaryMap.Symbol}`}).send(summaryMap);
+	console.log ("Waiting to send");
+        res.status(202).header({Location: `http://localhost:${port}/stocksummary/${summaryMap}`}).send(summaryMap);
+        //res.status(202).header({Location: `http://localhost:${port}/stocksummary/${foundSummary.id}`}).send(foundSummary);
    } else {
        console.log(`Stock Summary not found.`);
        res.status(404).send();
    }
+   */
 });
 
 //app.use('/img', express.static(path.join(__dirname,'img')));
