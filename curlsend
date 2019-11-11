@@ -1,5 +1,4 @@
-curl -i --request POST --header "Content-Type: application/json" --data '{"stockId": 3, "stocksummaryId":1}' localhost:8082/assignment
-curl -i --request POST --header "Content-Type: application/json" --data '{"stocksummaryId":"CSCO"}' localhost:8081/stocksummary/4
+curl -i --request POST --header "Content-Type: application/json" --data '{"stockId": 1, "stocksummaryId":"WUBA"}' localhost:8082/assignment
 node stocks.js 8082
 node stocksummary.js 8081
 # This one is to get the list of threats entirely.
