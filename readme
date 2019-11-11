@@ -1,6 +1,6 @@
 1. mongo - not required if it's already running.
 curl -i --request POST --header "Content-Type: application/json" --data '{"stockId": 1, "stocksummaryId":"WUBA"}' localhost:8082/assignment
-
+curl -i --request POST --header "Content-Type: application/json" --data '{"stockId": 1, "stocksummaryId":"WUBA"}' localhost:8082/assignment
 2. open separate terminals 
 	node stocks.js 8082
 	node stocksummary.js 8081
